@@ -1,21 +1,27 @@
-const {} = require("../../database/models");
+const { Genre } = require("../../database/models");
 
-module.exports = {
-    list: (req, res) => {
-        this.genres.findAll()
-        .then(genres => {
-            const RESPONDE = {
-                meta: {
-                    status: 200,
-                    total: genres.lenght,
-                    url: "/genres"
-                },
-                data: genres
-            }
-            res.json(RESPONSE);
-        })
-    },
-    genres: (req, res) => {
+const genresController = {
+      list: async (req, res) => {
+            const GENRES = await Genre.findAll();
+            return res.status(200).json({
+                  meta: {
+                        status: 200,
+                        total: GENRES.length,
+                        url: "api/v1/genres",
+                  },
+                  data: GENRES,
+            });
+      },
+      detail: async (req, res) => {
+            const GENRE_ID = await Genre.findByPk(req.params.id);
+            return res.status(200).json({
+                  meta: {
+                        status: 200,
+                        url: "api/v1/genres/:id",
+                  },
+                  data: GENRE_ID,
+            });
+      },
+};
 
-    }, 
-}
+module.exports = genresController;
